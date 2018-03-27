@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: order-capture-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: order-capture-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+
+
