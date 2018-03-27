@@ -28,4 +28,7 @@ spec:
           value: "mongodb://nobby-panda-mongodb.default.svc.cluster.local:27017"
         - name: CHALLENGEAPPINSIGHTS_KEY
           value: "23c6b1ec-ca92-4083-86b6-eba851af9032"
-
+      volumes:
+      - name: order-fulfill-volume
+        persistentVolumeClaim:
+          claimName: order-fulfill-file

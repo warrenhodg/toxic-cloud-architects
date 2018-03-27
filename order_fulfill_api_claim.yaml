@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: order-fulfill-file
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: order-fulfill-storage
+  resources:
+    requests:
+      storage: 3Gi
