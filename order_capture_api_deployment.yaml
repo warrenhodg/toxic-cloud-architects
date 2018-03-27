@@ -1,0 +1,31 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: order-capture-api
+  labels:
+    app: order-capture-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: order-capture-api
+  template:
+    metadata:
+      labels:
+        app: order-capture-api
+    spec:
+      containers:
+      - name: order-capture-api
+        image: "sabbour/captureorderack-netcore"
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APPINSIGHTS_KEY
+          value: "57d1dcf9-b7c3-42cd-98d1-110225546a69"
+        - name: TEAMNAME
+          value: "Toxic Cloud Architects"
+        - name: AMQPURL
+          value: "amqp://user:PRIvS82pza@ugly-sabertooth-rabbitmq.default.svc.cluster.local:5672"
+        - name: MONGOURL
+          value: "mongodb://nobby-panda-mongodb.default.svc.cluster.local:27017"
+

@@ -1,0 +1,31 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: order-event-listener
+  labels:
+    app: order-event-listener
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-event-listener
+  template:
+    metadata:
+      labels:
+        app: order-event-listener
+    spec:
+      containers:
+      - name: order-event-listener
+        image: "sabbour/rabbitmqlistenerack"
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APPINSIGHTS_KEY
+          value: "57d1dcf9-b7c3-42cd-98d1-110225546a69"
+        - name: TEAMNAME
+          value: "Toxic Cloud Architects"
+        - name: PROCESSENDPOINT
+          value: "http://fulfillorder.default.svc.cluster.local:80/v1/order/"
+        - name: CHALLENGEAPPINSIGHTS_KEY
+          value: "23c6b1ec-ca92-4083-86b6-eba851af9032"
+

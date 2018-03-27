@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: order-fulfill-service
+spec:
+  type: ClusterIP
+  selector:
+    app: order-fulfill-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+
+

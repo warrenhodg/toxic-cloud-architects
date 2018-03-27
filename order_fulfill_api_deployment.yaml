@@ -1,0 +1,31 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: order-fulfill-api
+  labels:
+    app: order-fulfill-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-fulfill-api
+  template:
+    metadata:
+      labels:
+        app: order-fulfill-api
+    spec:
+      containers:
+      - name: order-fulfill-api
+        image: "sabbour/fulfillorderack"
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APPINSIGHTS_KEY
+          value: "57d1dcf9-b7c3-42cd-98d1-110225546a69"
+        - name: TEAMNAME
+          value: "Toxic Cloud Architects"
+        - name: MONGOURL
+          value: "mongodb://nobby-panda-mongodb.default.svc.cluster.local:27017"
+        - name: CHALLENGEAPPINSIGHTS_KEY
+          value: "23c6b1ec-ca92-4083-86b6-eba851af9032"
+
