@@ -26,7 +26,7 @@ spec:
         - name: TEAMNAME
           value: "Toxic Cloud Architects"
         - name: MONGOURL
-          value: "mongodb://doltish-robin-rabbitmq.default.svc.cluster.local:27017"
+          value: "mongodb://honking-wolverine-mongodb.default.svc.cluster.local:27017"
         - name: CHALLENGEAPPINSIGHTS_KEY
           value: "23c6b1ec-ca92-4083-86b6-eba851af9032"
         volumeMounts:
