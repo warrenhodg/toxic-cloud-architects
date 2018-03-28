@@ -1,0 +1,75 @@
+---
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: order-fulfill-api
+  labels:
+    app: order-fulfill-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-fulfill-api
+  template:
+    metadata:
+      labels:
+        app: order-fulfill-api
+    spec:
+      containers:
+      - name: order-fulfill-api
+        image: "sabbour/fulfillorderack"
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APPINSIGHTS_KEY
+          value: "57d1dcf9-b7c3-42cd-98d1-110225546a69"
+        - name: TEAMNAME
+          value: "Toxic Cloud Architects"
+        - name: MONGOURL
+          value: "mongodb://nobby-panda-mongodb.default.svc.cluster.local:27017"
+        - name: CHALLENGEAPPINSIGHTS_KEY
+          value: "23c6b1ec-ca92-4083-86b6-eba851af9032"
+        volumeMounts:
+        - name: order-fulfill-volume
+          mountPath: /orders
+    volumes:
+    - name: order-fulfill-volume
+      persistentVolumeClaim:
+        claimName: order-fulfill-file
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: order-fulfill-service
+spec:
+  type: ClusterIP
+  selector:
+    app: order-fulfill-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: order-fulfill-storage
+provisioner: kubernetes.io/azure-file
+parameters:
+  skuName: Standard_LRS
+  location: eastus
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: order-fulfill-file
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: order-fulfill-storage
+  resources:
+    requests:
+      storage: 3Gi
