@@ -1,0 +1,86 @@
+NAME:   honking-wolverine
+LAST DEPLOYED: Wed Mar 28 11:16:51 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/Secret
+NAME                       TYPE    DATA  AGE
+honking-wolverine-mongodb  Opaque  2     1s
+
+==> v1/PersistentVolumeClaim
+NAME                       STATUS   VOLUME   CAPACITY  ACCESS MODES  STORAGECLASS  AGE
+honking-wolverine-mongodb  Pending  default  1s
+
+==> v1/Service
+NAME                       TYPE       CLUSTER-IP   EXTERNAL-IP  PORT(S)    AGE
+honking-wolverine-mongodb  ClusterIP  10.0.156.83  <none>       27017/TCP  1s
+
+==> v1beta1/Deployment
+NAME                       DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+honking-wolverine-mongodb  1        1        1           0          1s
+
+==> v1/Pod(related)
+NAME                                        READY  STATUS   RESTARTS  AGE
+honking-wolverine-mongodb-3588143928-rq77w  0/1    Pending  0         1s
+
+
+NOTES:
+MongoDB can be accessed via port 27017 on the following DNS name from within your cluster:
+honking-wolverine-mongodb.default.svc.cluster.local
+
+To connect to your database run the following command:
+
+   kubectl run honking-wolverine-mongodb-client --rm --tty -i --image bitnami/mongodb --command -- mongo --host honking-wolverine-mongodb
+NAME:   doltish-robin
+LAST DEPLOYED: Wed Mar 28 11:17:03 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/Secret
+NAME                    TYPE    DATA  AGE
+doltish-robin-rabbitmq  Opaque  2     2s
+
+==> v1/PersistentVolumeClaim
+NAME                    STATUS   VOLUME   CAPACITY  ACCESS MODES  STORAGECLASS  AGE
+doltish-robin-rabbitmq  Pending  default  2s
+
+==> v1/Service
+NAME                    TYPE       CLUSTER-IP   EXTERNAL-IP  PORT(S)                                AGE
+doltish-robin-rabbitmq  ClusterIP  10.0.56.172  <none>       4369/TCP,5672/TCP,25672/TCP,15672/TCP  2s
+
+==> v1beta1/Deployment
+NAME                    DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+doltish-robin-rabbitmq  1        1        1           0          2s
+
+==> v1/Pod(related)
+NAME                                     READY  STATUS   RESTARTS  AGE
+doltish-robin-rabbitmq-3940740992-0qnnk  0/1    Pending  0         2s
+
+
+NOTES:
+
+** Please be patient while the chart is being deployed **
+
+  Credentials:
+
+    echo Username      : user
+    echo Password      : $(kubectl get secret --namespace default doltish-robin-rabbitmq -o jsonpath="{.data.rabbitmq-password}" | base64 --decode)
+    echo ErLang Cookie : $(kubectl get secret --namespace default doltish-robin-rabbitmq -o jsonpath="{.data.rabbitmq-erlang-cookie}" | base64 --decode)
+
+  RabbitMQ can be accessed within the cluster on port 5672 at doltish-robin-rabbitmq.default.svc.cluster.local
+
+  To access for outside the cluster execute the following commands:
+
+    export POD_NAME=$(kubectl get pods --namespace default -l "app=doltish-robin-rabbitmq" -o jsonpath="{.items[0].metadata.name}")
+    kubectl port-forward $POD_NAME 5672:5672 15672:15672
+
+  To Access the RabbitMQ AMQP port:
+
+    echo amqp://127.0.0.1:5672/
+
+  To Access the RabbitMQ Management interface:
+
+    echo URL : http://127.0.0.1:15672
+

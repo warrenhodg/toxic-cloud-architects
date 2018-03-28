@@ -9,13 +9,16 @@ az group create --name Toxic-Cloud --location eastus
 #create the kubernetes cluster.
 az aks create -s Standard_DS1_v2 --resource-group Toxic-Cloud -l eastus --name cluster --node-count 3 --generate-ssh-keys
 
+#auth kube with new cluster
+az aks get-credentials --resource-group Toxic-Cloud --name cluster
+
 #initalize helm - may not be needed
 heml init
 
 #----------------------
 #kubernetes setup
 #provision mongodb
-helm knstall stable/mongodb
+helm install stable/mongodb
 
 #provision rabbitmq
 helm install stable/rabbitmq
